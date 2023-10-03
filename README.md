@@ -1,4 +1,4 @@
-````markdown
+
 # Pomodoro Clock
 
 This React component is a digital implementation of the Pomodoro Technique, a time management method that encourages people to work with the time they have—rather than against it.
@@ -54,7 +54,3 @@ This component is distributed under the MIT License.
 ---
 
 Developed with ❤️ by Felipe Machado https://github.com/FelipeWSMachado/
-
-```
-
-```
