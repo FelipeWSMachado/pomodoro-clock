@@ -3,7 +3,7 @@
 
 This React component is a digital implementation of the Pomodoro Technique, a time management method that encourages people to work with the time they have—rather than against it.
 
-![Pomodoro Clock Demo](/public/working.png)
+![Pomodoro Clock Demo](public/working.png)
 
 ## Features:
 
