@@ -1,6 +1,6 @@
-import { useContext, useState, useEffect, useRef, useCallback } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import stopIco from "./assets/hand_stop_icon.ico";
+import stop from "./assets/hand_stop_icon.ico";
 import play from "./assets/continue.ico";
 
 import PlayButton from "./PlayButton";
@@ -38,24 +38,24 @@ export default function Timer() {
 
   const modes = {
     work: {
-      next: "break",
-      time: settingsInfo.breakMinutes,
-      notification: {
-        body: "Time for a break!",
-        icon: play,
-      },
+        next: "break",
+        time: settingsInfo.breakMinutes,
+        notification: {
+            body: "Time for a break!",
+            icon: stop,
+        },
     },
     break: {
-      next: "work",
-      time: settingsInfo.workMinutes,
-      notification: {
-        body: "Time to get back to work!",
-        icon: stopIco,
-      },
+        next: "work",
+        time: settingsInfo.workMinutes,
+        notification: {
+            body: "Time to get back to work!",
+            icon: play,
+        },
     },
-  };
+};
 
-  const handleSwitchMode = useCallback(() => {
+function handleSwitchMode() {
     const currentMode = modeRef.current;
     const nextModeData = modes[currentMode];
 
@@ -66,23 +66,24 @@ export default function Timer() {
     secondsLeftRef.current = nextSeconds;
 
     sendNotification("Pomodoro Clock", nextModeData.notification);
-  }, [modes]); // assuming modes can change and is defined within the component
+}
 
-  useEffect(() => {
+useEffect(() => {
     requestNotificationPermission();
 
     setSecondsLeft(settingsInfo.workMinutes * 60);
     secondsLeftRef.current = settingsInfo.workMinutes * 60;
 
     const interval = setInterval(() => {
-      if (isPausedRef.current) return;
-      if (secondsLeftRef.current === 0) return handleSwitchMode();
-      secondsLeftRef.current--;
-      setSecondsLeft(secondsLeftRef.current);
+        if (isPausedRef.current) return;
+        if (secondsLeftRef.current === 0) return handleSwitchMode();
+        secondsLeftRef.current--;
+        setSecondsLeft(secondsLeftRef.current);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [settingsInfo, handleSwitchMode]);
+}, [settingsInfo]);
+
 
   const totalSeconds =
     mode === "work"
