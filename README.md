@@ -1,10 +1,9 @@
-
-```markdown
+````markdown
 # Pomodoro Clock
 
 This React component is a digital implementation of the Pomodoro Technique, a time management method that encourages people to work with the time they have—rather than against it.
 
-![Pomodoro Clock Demo](path_to_your_pomodoro_clock_screenshot.png)
+![Pomodoro Clock Demo](./public/working.png)
 
 ## Features:
 
@@ -16,10 +15,11 @@ This React component is a digital implementation of the Pomodoro Technique, a ti
 ## Installation:
 
 1. Ensure `react` and `react-dom` are installed in your project.
-2. Install the required package: 
+2. Install the required package:
    ```bash
    npm install react-circular-progressbar
    ```
+````
 
 3. Clone or copy the Pomodoro Clock component into your project.
 
@@ -28,12 +28,12 @@ This React component is a digital implementation of the Pomodoro Technique, a ti
 To integrate the Pomodoro Clock in your React application:
 
 ```jsx
-import PomodoroClock from 'path_to_PomodoroClock_component';
+import Timer from "./Timer";
 
 function App() {
   return (
     <div>
-      <PomodoroClock />
+      <Timer />
     </div>
   );
 }
@@ -53,7 +53,8 @@ This component is distributed under the MIT License.
 
 ---
 
-Developed with ❤️ by [Your Name](Your GitHub Link)
+Developed with ❤️ by Felipe Machado https://github.com/FelipeWSMachado/
+
 ```
 
-Again, please replace the placeholders (`path_to_your_pomodoro_clock_screenshot.png`, `path_to_PomodoroClock_component`, `Your Name`, and `Your GitHub Link`) with the appropriate paths and links.
+```
