@@ -1,5 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import stopIco from "./assets/hand_stop_ico.ico";
+import play from "./assets/continue.ico";
 
 import PlayButton from "./PlayButton";
 import PauseButton from "./PauseButton";
@@ -22,35 +24,68 @@ export default function Timer() {
   const isPausedRef = useRef(isPaused);
   const modeRef = useRef(mode);
 
-  useEffect(() => {
-    function handleSwitchMode() {
-      const nextMode = modeRef.current === "work" ? "break" : "work";
-      const nextSeconds = 
-        (nextMode === "work"
-          ? settingsInfo.workMinutes
-          : settingsInfo.breakMinutes) * 60;
-
-      setMode(nextMode);
-      modeRef.current = nextMode;
-
-      setSecondsLeft(nextSeconds);
-      secondsLeftRef.current = nextSeconds;
+  const requestNotificationPermission = () => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
     }
+  };
 
+  const sendNotification = (title, options) => {
+    if (Notification.permission === "granted") {
+      new Notification(title, options);
+    }
+  };
+
+  const modes = {
+    work: {
+        next: "break",
+        time: settingsInfo.breakMinutes,
+        notification: {
+            body: "Time for a break!",
+            icon: play,
+        },
+    },
+    break: {
+        next: "work",
+        time: settingsInfo.workMinutes,
+        notification: {
+            body: "Time to get back to work!",
+            icon: stopIco,
+        },
+    },
+};
+
+function handleSwitchMode() {
+    const currentMode = modeRef.current;
+    const nextModeData = modes[currentMode];
+
+    setMode(nextModeData.next);
+    modeRef.current = nextModeData.next;
+    const nextSeconds = nextModeData.time * 60;
+    setSecondsLeft(nextSeconds);
+    secondsLeftRef.current = nextSeconds;
+
+    sendNotification("Pomodoro Clock", nextModeData.notification);
+}
+
+useEffect(() => {
+    requestNotificationPermission();
+
+    setSecondsLeft(settingsInfo.workMinutes * 60);
     secondsLeftRef.current = settingsInfo.workMinutes * 60;
-    setSecondsLeft(secondsLeftRef.current);
 
     const interval = setInterval(() => {
-      if (isPausedRef.current) return;
-      if (secondsLeftRef.current === 0) return handleSwitchMode();
-      secondsLeftRef.current--;
-      setSecondsLeft(secondsLeftRef.current);
+        if (isPausedRef.current) return;
+        if (secondsLeftRef.current === 0) return handleSwitchMode();
+        secondsLeftRef.current--;
+        setSecondsLeft(secondsLeftRef.current);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [settingsInfo]);
+}, [settingsInfo]);
 
-  const totalSeconds = 
+
+  const totalSeconds =
     mode === "work"
       ? settingsInfo.workMinutes * 60
       : settingsInfo.breakMinutes * 60;
@@ -59,7 +94,7 @@ export default function Timer() {
 
   const formatTime = (s) => {
     const minutes = Math.floor(s / 60);
-    const seconds = (`0${s % 60}`).slice(-2);
+    const seconds = `0${s % 60}`.slice(-2);
     return `${minutes}:${seconds}`;
   };
 
@@ -77,16 +112,21 @@ export default function Timer() {
         })}
       />
       <div style={{ marginTop: "20px" }}>
-        {isPaused 
-          ? <PlayButton onClick={() => {
+        {isPaused ? (
+          <PlayButton
+            onClick={() => {
               setIsPaused(false);
               isPausedRef.current = false;
-            }} />
-          : <PauseButton onClick={() => {
+            }}
+          />
+        ) : (
+          <PauseButton
+            onClick={() => {
               setIsPaused(true);
               isPausedRef.current = true;
-            }} />
-        }
+            }}
+          />
+        )}
       </div>
       <div style={{ marginTop: "20px" }}>
         <SettingsButton onClick={() => settingsInfo.setShowSettings(true)} />
