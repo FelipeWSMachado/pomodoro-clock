@@ -55,7 +55,13 @@ export default function Timer() {
     },
 };
 
-function handleSwitchMode() {
+useEffect(() => {
+  requestNotificationPermission();
+
+  setSecondsLeft(settingsInfo.workMinutes * 60);
+  secondsLeftRef.current = settingsInfo.workMinutes * 60;
+
+  function handleSwitchMode() {
     const currentMode = modeRef.current;
     const nextModeData = modes[currentMode];
 
@@ -66,23 +72,17 @@ function handleSwitchMode() {
     secondsLeftRef.current = nextSeconds;
 
     sendNotification("Pomodoro Clock", nextModeData.notification);
-}
+  }
 
-useEffect(() => {
-    requestNotificationPermission();
+  const interval = setInterval(() => {
+    if (isPausedRef.current) return;
+    if (secondsLeftRef.current === 0) return handleSwitchMode();
+    secondsLeftRef.current--;
+    setSecondsLeft(secondsLeftRef.current);
+  }, 1000);
 
-    setSecondsLeft(settingsInfo.workMinutes * 60);
-    secondsLeftRef.current = settingsInfo.workMinutes * 60;
-
-    const interval = setInterval(() => {
-        if (isPausedRef.current) return;
-        if (secondsLeftRef.current === 0) return handleSwitchMode();
-        secondsLeftRef.current--;
-        setSecondsLeft(secondsLeftRef.current);
-    }, 1000);
-
-    return () => clearInterval(interval);
-}, [settingsInfo]);
+  return () => clearInterval(interval);
+}, [settingsInfo, modes]);
 
 
   const totalSeconds =
