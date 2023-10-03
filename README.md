@@ -19,7 +19,6 @@ This React component is a digital implementation of the Pomodoro Technique, a ti
    ```bash
    npm install react-circular-progressbar
    ```
-````
 
 3. Clone or copy the Pomodoro Clock component into your project.
 
