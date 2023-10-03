@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b1587234.css",
+    "main.js": "/static/js/main.8150c90b.js",
+    "static/js/787.aa0a8a2b.chunk.js": "/static/js/787.aa0a8a2b.chunk.js",
+    "static/media/hand_stop_icon.ico": "/static/media/hand_stop_icon.02bbdd25f50cf9676ce4.ico",
+    "static/media/continue.ico": "/static/media/continue.cf35ea07634d8161ef5b.ico",
+    "index.html": "/index.html",
+    "main.b1587234.css.map": "/static/css/main.b1587234.css.map",
+    "main.8150c90b.js.map": "/static/js/main.8150c90b.js.map",
+    "787.aa0a8a2b.chunk.js.map": "/static/js/787.aa0a8a2b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b1587234.css",
+    "static/js/main.8150c90b.js"
+  ]
+}

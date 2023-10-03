@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import stopIco from "./assets/hand_stop_ico.ico";
+import stopIco from "./assets/hand_stop_icon.ico";
 import play from "./assets/continue.ico";
 
 import PlayButton from "./PlayButton";
