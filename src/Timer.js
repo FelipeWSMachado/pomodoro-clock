@@ -36,24 +36,7 @@ export default function Timer() {
     }
   };
 
-  const modes = {
-    work: {
-        next: "break",
-        time: settingsInfo.breakMinutes,
-        notification: {
-            body: "Time for a break!",
-            icon: stop,
-        },
-    },
-    break: {
-        next: "work",
-        time: settingsInfo.workMinutes,
-        notification: {
-            body: "Time to get back to work!",
-            icon: play,
-        },
-    },
-};
+
 
 useEffect(() => {
   requestNotificationPermission();
@@ -62,6 +45,24 @@ useEffect(() => {
   secondsLeftRef.current = settingsInfo.workMinutes * 60;
 
   function handleSwitchMode() {
+    const modes = {
+      work: {
+          next: "break",
+          time: settingsInfo.breakMinutes,
+          notification: {
+              body: "Time for a break!",
+              icon: stop,
+          },
+      },
+      break: {
+          next: "work",
+          time: settingsInfo.workMinutes,
+          notification: {
+              body: "Time to get back to work!",
+              icon: play,
+          },
+      },
+  };
     const currentMode = modeRef.current;
     const nextModeData = modes[currentMode];
 
@@ -82,7 +83,7 @@ useEffect(() => {
   }, 1000);
 
   return () => clearInterval(interval);
-}, [settingsInfo, modes]);
+}, [settingsInfo]);
 
 
   const totalSeconds =
