@@ -5,6 +5,7 @@ This React component is a digital implementation of the Pomodoro Technique, a ti
 
 ![Pomodoro Clock Demo](public/working.png)
 
+<h4 align="center"><a href="https://happy-bohr-4d01a4.netlify.app/">Check the project here</a></h4>
 ## Features:
 
 1. **Work and Break Intervals:** Alternates between work and break intervals. Once a work interval ends, a break interval begins automatically.
