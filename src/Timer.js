@@ -8,8 +8,8 @@ import SettingsContext from "./SettingsContext";
 
 import "react-circular-progressbar/dist/styles.css";
 
-const red = "#f54e4e";
-const green = "#4aec8c";
+const RED_COLOR = "#f54e4e";
+const GREEN_COLOR = "#4aec8c";
 
 export default function Timer() {
   const settingsInfo = useContext(SettingsContext);
@@ -22,15 +22,10 @@ export default function Timer() {
   const isPausedRef = useRef(isPaused);
   const modeRef = useRef(mode);
 
-  function tick() {
-    secondsLeftRef.current--;
-    setSecondsLeft(secondsLeftRef.current);
-  }
-
   useEffect(() => {
-    function switchMode() {
+    function handleSwitchMode() {
       const nextMode = modeRef.current === "work" ? "break" : "work";
-      const nextSeconds =
+      const nextSeconds = 
         (nextMode === "work"
           ? settingsInfo.workMinutes
           : settingsInfo.breakMinutes) * 60;
@@ -46,56 +41,52 @@ export default function Timer() {
     setSecondsLeft(secondsLeftRef.current);
 
     const interval = setInterval(() => {
-      if (isPausedRef.current) {
-        return;
-      }
-      if (secondsLeftRef.current === 0) {
-        return switchMode();
-      }
-
-      tick();
+      if (isPausedRef.current) return;
+      if (secondsLeftRef.current === 0) return handleSwitchMode();
+      secondsLeftRef.current--;
+      setSecondsLeft(secondsLeftRef.current);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [settingsInfo]);
 
-  const totalSeconds =
+  const totalSeconds = 
     mode === "work"
       ? settingsInfo.workMinutes * 60
       : settingsInfo.breakMinutes * 60;
+
   const percentage = Math.round((secondsLeft / totalSeconds) * 100);
 
-  const minutes = Math.floor(secondsLeft / 60);
-  let seconds = secondsLeft % 60;
-  if (seconds < 10) seconds = "0" + seconds;
+  const formatTime = (s) => {
+    const minutes = Math.floor(s / 60);
+    const seconds = (`0${s % 60}`).slice(-2);
+    return `${minutes}:${seconds}`;
+  };
+
+  const pathColor = mode === "work" ? RED_COLOR : GREEN_COLOR;
 
   return (
     <div>
       <CircularProgressbar
         value={percentage}
-        text={minutes + ":" + seconds}
+        text={formatTime(secondsLeft)}
         styles={buildStyles({
           textColor: "#fff",
-          pathColor: mode === "work" ? red : green,
+          pathColor: pathColor,
           tailColor: "rgba(255,255,255,.2)",
         })}
       />
       <div style={{ marginTop: "20px" }}>
-        {isPaused ? (
-          <PlayButton
-            onClick={() => {
+        {isPaused 
+          ? <PlayButton onClick={() => {
               setIsPaused(false);
               isPausedRef.current = false;
-            }}
-          />
-        ) : (
-          <PauseButton
-            onClick={() => {
+            }} />
+          : <PauseButton onClick={() => {
               setIsPaused(true);
               isPausedRef.current = true;
-            }}
-          />
-        )}
+            }} />
+        }
       </div>
       <div style={{ marginTop: "20px" }}>
         <SettingsButton onClick={() => settingsInfo.setShowSettings(true)} />
